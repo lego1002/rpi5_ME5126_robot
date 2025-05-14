@@ -1,0 +1,31 @@
+ekf_filter_node:
+  ros__parameters:
+    # 更新頻率
+    frequency: 30.0
+    sensor_timeout: 1.0
+    two_d_mode: true
+
+    # 啟用 TF 發佈
+    publish_tf: true
+
+    # 參考框架設定
+    map_frame: 'map'
+    odom_frame: 'odom'
+    base_link_frame: base_link
+
+    # 里程計輸入
+    odom0: /wheel/odom
+    odom0_config: [true, false, false,
+                   false, false, true,
+                   true, false, false]
+    odom0_queue_size: 5
+    odom0_relative: true
+
+    # IMU 輸入
+    imu0: /imu/data
+    imu0_config: [false, false, false,
+                  false, false, true,
+                  false, false, false,
+                  false, false, true]
+    imu0_queue_size: 5
+    imu0_remove_gravitational_acceleration: true
