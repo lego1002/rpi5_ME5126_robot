@@ -1,46 +1,33 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Generate a 480×180 ASCII PGM map with 60×60 grid cells, plus YAML.
-"""
-
 import os
 
 def main():
-    # output paths
-    map_dir   = '/tmp/rpi5_auto_map'
-    pgm_path  = os.path.join(map_dir, 'auto_map.pgm')
-    yaml_path = os.path.join(map_dir, 'auto_map.yaml')
-
-    # make dir
+    # 1) 准备文件夹
+    map_dir = '/tmp/rpi5_auto_map'
     os.makedirs(map_dir, exist_ok=True)
 
-    # dimensions
-    width, height = 480, 180
-
-    # write PGM
-    with open(pgm_path, 'w') as f:
-        f.write('P2\n{} {}\n255\n'.format(width, height))
-        for y in range(height):
-            row = ['0' if (x % 60 == 0 or y % 60 == 0) else '255'
-                   for x in range(width)]
+    # 2) 生成 PGM（480×180 格，每 60 像素画一条格线）
+    map_pgm = os.path.join(map_dir, 'auto_map.pgm')
+    with open(map_pgm, 'w') as f:
+        f.write('P2\n480 180\n255\n')
+        for y in range(180):
+            row = ['0' if (x % 60 == 0 or y % 60 == 0) else '255' for x in range(480)]
             f.write(' '.join(row) + '\n')
 
-    # write YAML
-    content = (
-        f"image: {pgm_path}\n"
-        "resolution: 0.01\n"
-        "origin: [0.0, 0.0, 0.0]\n"
-        "negate: 0\n"
-        "occupied_thresh: 0.65\n"
-        "free_thresh: 0.196\n"
-    )
-    with open(yaml_path, 'w') as f:
-        f.write(content)
-
-    print("Generated:", pgm_path)
-    print("Generated:", yaml_path)
+    # 3) 生成 YAML（注意：**行首绝对不要缩进**）
+    map_yaml = os.path.join(map_dir, 'auto_map.yaml')
+    yaml_content = f"""\
+image: {map_pgm}
+resolution: 0.01
+origin: [0.0, 0.0, 0.0]
+negate: 0
+occupied_thresh: 0.65
+free_thresh: 0.196
+"""
+    with open(map_yaml, 'w') as f:
+        f.write(yaml_content)
 
 if __name__ == '__main__':
     main()

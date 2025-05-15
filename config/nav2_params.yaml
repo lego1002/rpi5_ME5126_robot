@@ -1,4 +1,3 @@
-# ---------------------- AMCL 參數 ----------------------
 amcl:
   ros__parameters:
     use_sim_time: false
@@ -12,53 +11,30 @@ amcl:
     odom_alpha3: 0.2
     odom_alpha4: 0.2
 
-# ------------------- Planner Server 參數 -------------------
 planner_server:
   ros__parameters:
     use_sim_time: false
     expected_planner_frequency: 20.0
     planner_plugins: ["GridBased"]
     GridBased:
-      plugin: "nav2_navfn_planner/NavfnPlanner"
-      tolerance: 0.5
-      allow_unknown: true
+      plugin: "nav2_navfn_planner::NavfnPlanner"
 
-# ------------------ Controller Server 參數 ------------------
 controller_server:
   ros__parameters:
-    controller_plugins: ["DWBLocalPlanner"]
-    DWBLocalPlanner:
-      plugin: "dwb_core::DWBLocalPlanner"
-      critics:
-        - name: "GoalAlign"
-          plugin: "dwb_critics::GoalAlign"
-        - name: "Oscillation"
-          plugin: "dwb_critics::Oscillation"
-        - name: "PathAlign"
-          plugin: "dwb_critics::PathAlign"
-        - name: "GoalDist"
-          plugin: "dwb_critics::GoalDist"
-      max_vel_x: 0.3
-      min_vel_x: 0.0
-      max_vel_theta: 1.0
-      min_vel_theta: -1.0
-      acc_lim_x: 1.0
-      acc_lim_theta: 1.0
-      decel_lim_x: -1.0
-      decel_lim_theta: -1.0
+    use_sim_time: false
+    controller_plugins: ["FollowPath"]
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      lookahead_time: 1.0
+      minimum_speed: 0.1
+      maximum_speed: 0.5
+      use_straight_line_following: true
 
-
-# ------------------- BT Navigator 參數 -------------------
 bt_navigator:
   ros__parameters:
     use_sim_time: false
-    autostart: true
-    plugin_lib_names:
-      - "nav2_compute_path_to_pose_action_bt_node"
-      - "nav2_follow_path_action_bt_node"
     bt_xml_filename: "navigate_w_replanning_and_recovery.xml"
 
-# --------------- Lifecycle Manager 參數 ---------------
 lifecycle_manager_navigation:
   ros__parameters:
     use_sim_time: false

@@ -30,6 +30,8 @@ setup(
             os.path.join('launch', 'nav2_bringup_with_rviz_launch.py'),
             os.path.join('launch', 'rpi5_odometry_rviz2_launch.py'),
             os.path.join('launch', 'nav2_bringup_navigation_launch.py'),
+            os.path.join('launch', 'nav2_bringup_with_odom_launch.py'),
+            os.path.join('launch', 'nav2_navigation_launch.py'),
         ]),
 
         # Scripts
